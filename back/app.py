@@ -15,31 +15,34 @@ mongo = PyMongo(app)
 @app.route('/', methods=['POST'])
 def compute():
     typeOfSearch = request.json['typeOfSearch']
-    result = arxiv.query(query=request.json['search'], max_chunk_results=10)
+    result = arxiv.query(
+        query=request.json['search'],
+        max_chunk_results=10,
+        max_results=5
+    )
     finalResult = []
     #print(result[0], file=sys.stdout)
     for paper in result:
-        if typeOfSearch == 'generalSearchChecked':
-            finalResult.append(paper)
-            mongo.db.publications.insert_many([{
-                'id': paper.id, 
-                'summary': paper.summary, 
-                'authors': paper.authors, 
-                'author': paper.author,
-                'pdf_url': paper.pdf_url
-            }])
-        elif typeOfSearch == 'searchCoAuthorsChecked':
+        #if typeOfSearch == 'generalSearchChecked':
+        finalResult.append(paper)
+        mongo.db.publications.insert_many([{
+            'id': paper.id,
+            'summary': paper.summary,
+            'authors': paper.authors,
+            'author': paper.author,
+            'pdf_url': paper.pdf_url,
+            'title': paper.title,
+            'arxiv_comment': paper.arxiv_comment
+        }])
+        #else: #typeOfSearch == 'searchCoAuthorsChecked':
+            #if paper.author == request.json['search']:
+                #finalResult.append(paper)
+        """else:
             if paper.author == request.json['search']:
                 finalResult.append({
                     author: paper.author,
                     authors: paper.authors
-                })
-        else:
-            if paper.author == request.json['search']:
-                finalResult.append({
-                    author: paper.author,
-                    authors: paper.authors
-                })
+                })"""
     return jsonify({ 'result': finalResult})
     
 if __name__ == '__main__':

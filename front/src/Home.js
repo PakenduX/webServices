@@ -34,7 +34,8 @@ const useStyles = makeStyles(theme => ({
         maxWidth: 345,
         height: 350,
         maxHeight: 350,
-        marginTop: 15
+        marginTop: 15,
+        overflowY: 'scroll'
     },
     media: {
         height: 140,
@@ -103,7 +104,10 @@ export default function Home() {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Grid justify="center" style={{ marginRight: '15%', marginLeft: '15%'}}>
+            <Grid
+                justify="center"
+                style={{ marginRight: '15%', marginLeft: '15%'}}
+            >
                 <Grid item>
                     <form noValidate autoComplete="off">
                         <TextField
@@ -153,7 +157,12 @@ export default function Home() {
                     </FormGroup>
                 </Grid>
             </Grid>
-            <Grid spacing={2} justify="center" container style={{ marginTop: 50}}>
+            <Grid
+                spacing={2}
+                justify="center"
+                container
+                style={{ marginTop: 50}}
+            >
                 <Grid item>
                     <Button
                         variant="outlined"
@@ -174,10 +183,14 @@ export default function Home() {
                 }
             </Grid>
 
-            <Grid container spacing={2} justify="center">
+            <Grid
+                container
+                spacing={2}
+                justify="center"
+            >
                 {
-                    resuts.map(res =>
-                        <Grid item>
+                    resuts.map((res, key) =>
+                        <Grid item key={key}>
                             <Card className={classes.card}>
                                 <CardMedia
                                     className={classes.media}
@@ -188,8 +201,17 @@ export default function Home() {
                                     <Typography gutterBottom variant="h5" component="h2">
                                         { res.author }
                                     </Typography>
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                        {res.summary}
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                    >
+                                        {
+                                            generalSearchChecked ?
+                                                res.summary :
+                                                res.authors.map((auth, key) =>
+                                                    <Typography key={key}>{auth}</Typography>
+                                                )
+                                        }
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -197,7 +219,6 @@ export default function Home() {
                     )
                 }
             </Grid>
-
         </div>
     );
 }
