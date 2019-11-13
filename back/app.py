@@ -18,7 +18,7 @@ def compute():
     result = arxiv.query(
         query=request.json['search'],
         max_chunk_results=10,
-        max_results=5
+        max_results=10
     )
     finalResult = []
     #print(result[0], file=sys.stdout)

@@ -198,21 +198,36 @@ export default function Home() {
                                     title="Arxiv Engine Search"
                                 />
                                 <CardContent>
+                                    <Typography gutterBottom variant="h6" component="h6">
+                                        { res.title }
+                                    </Typography>
+                                    <Typography variant='body1'>Author :</Typography>
                                     <Typography gutterBottom variant="h5" component="h2">
                                         { res.author }
                                     </Typography>
-                                    <Typography
-                                        variant="body2"
-                                        color="textSecondary"
-                                    >
-                                        {
-                                            generalSearchChecked ?
-                                                res.summary :
-                                                res.authors.map((auth, key) =>
-                                                    <Typography key={key}>{auth}</Typography>
-                                                )
-                                        }
+                                    <Typography variant='body1'>PDF :</Typography>
+                                    <Typography gutterBottom variant="h6" component="h6">
+                                        { res.pdf_url }
                                     </Typography>
+                                    {
+                                        searchCoAuthorsChecked ?
+                                            <Typography
+                                                variant="caption"
+                                                color="textSecondary"
+                                            >
+                                                Co-authors:
+                                            </Typography> :
+                                            null
+                                    }
+                                    {
+                                        generalSearchChecked ?
+                                            <Typography variant='body1'>Summary :</Typography>:null
+                                    }
+                                    {
+                                        generalSearchChecked ?
+                                            res.summary :
+                                            res.authors.map((auth, key) => <Typography key={key}>{auth}</Typography>)
+                                    }
                                 </CardContent>
                             </Card>
                         </Grid>
