@@ -1,19 +1,17 @@
 #!flask/bin/python
 from flask import Flask, request, jsonify
-import sys
 from flask_cors import CORS
-import numpy as np
 import arxiv
 from flask_pymongo import PyMongo
-import json
+import requests as req
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.config["MONGO_URI"] = "mongodb://127.0.0.1:27017/webServices"
 mongo = PyMongo(app)
 
-@app.route('/', methods=['POST'])
-def compute():
+@app.route('/arxiv', methods=['POST'])
+def arxivSearch():
     typeOfSearch = request.json['typeOfSearch']
     result = arxiv.query(
         query=request.json['search'],
@@ -44,6 +42,12 @@ def compute():
                     authors: paper.authors
                 })"""
     return jsonify({ 'result': finalResult})
+
+@app.route('/hal', methods=['POST'])
+def halSearch():
+    url = 'https://api.archives-ouvertes.fr/search/?q=' + request.json['search'] + '&wt=json'
+    response = req.get(url)
+    return response.json()
     
 if __name__ == '__main__':
     app.run(debug=True)

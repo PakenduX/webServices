@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
-import Home from './Home';
+import Home from "./Home";
 
 ReactDOM.render(
     <BrowserRouter>
